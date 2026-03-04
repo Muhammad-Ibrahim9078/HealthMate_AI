@@ -1,6 +1,6 @@
 import express from 'express';
 import { isAuthenticated } from '../middleware/isAuthenticated.js';
-import { createReport, getReportById, getReports, upload } from '../controllers/ReportController.js';
+import { createReport, deleteReport, getReportById, getReports, updateReport, upload } from '../controllers/ReportController.js';
 
 
 
@@ -9,6 +9,10 @@ const reportRoute = express.Router()
 reportRoute.post("/createReport", isAuthenticated,upload.single("image"), createReport);
 
 reportRoute.get("/getReports", isAuthenticated, getReports);
+
+reportRoute.delete("/deleteReport/:id", isAuthenticated, deleteReport);
+
+reportRoute.put("/updateReport/:id", isAuthenticated, upload.single("image"), updateReport);
 
 
 // routes mein add karo

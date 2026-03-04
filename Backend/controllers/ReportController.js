@@ -41,10 +41,8 @@ const uploadToCloudinary = (fileBuffer) => {
 export const createReport = async (req, res) => {
     try {
         const {
-            name, relation,
-            hospital, dr, date, price, note,
-            systolic, diastolic, temp, sugar,
-            height, weight
+            name, relation, hospital, dr, date, price, note,
+            systolic, diastolic, temp, sugar, height, weight
         } = req.body;
 
         const imageBuffer = req.file ? req.file.buffer : null;
@@ -58,8 +56,7 @@ export const createReport = async (req, res) => {
 
         let analysis = "";
         try {
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
             const textPart = {
                 text: `
 You are a medical assistant. Carefully analyze the attached medical report image and the patient vitals below.
@@ -82,45 +79,25 @@ Include findings from both the image and the vitals above. Keep it simple and cl
 
             let result;
             if (imageBuffer) {
-                const imagePart = {
-                    inlineData: {
-                        mimeType: imageMimeType,
-                        data: imageBuffer.toString("base64"),
-                    },
-                };
-                result = await model.generateContent({
-                    contents: [{ role: "user", parts: [imagePart, textPart] }],
-                });
+                const imagePart = { inlineData: { mimeType: imageMimeType, data: imageBuffer.toString("base64") } };
+                result = await model.generateContent({ contents: [{ role: "user", parts: [imagePart, textPart] }] });
             } else {
-                result = await model.generateContent({
-                    contents: [{ role: "user", parts: [textPart] }],
-                });
+                result = await model.generateContent({ contents: [{ role: "user", parts: [textPart] }] });
             }
-
             analysis = result.response.text();
             console.log("✅ Gemini analysis done:", analysis.slice(0, 100));
-
         } catch (geminiError) {
             console.log("❌ Gemini error:", geminiError.message);
         }
 
         const report = await Report.create({
-            name,
-            relation: relation || "Self",
-            user: req.user._id,
+            name, relation: relation || "Self", user: req.user._id,
             hospital, dr, date, price, note,
-            systolic, diastolic, temp, sugar,
-            height, weight,
-            imageUrl,
-            analysis,
+            systolic, diastolic, temp, sugar, height, weight,
+            imageUrl, analysis,
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Report Created Successfully",
-            data: report,
-        });
-
+        res.status(201).json({ success: true, message: "Report Created Successfully", data: report });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -131,18 +108,10 @@ export const getReports = async (req, res) => {
     try {
         const { name, relation } = req.query;
         const filter = { user: req.user._id };
-
         if (name) filter.name = { $regex: name, $options: "i" };
         if (relation) filter.relation = { $regex: relation, $options: "i" };
-
         const reports = await Report.find(filter).sort({ createdAt: -1 });
-
-        res.status(200).json({
-            success: true,
-            total: reports.length,
-            data: reports,
-        });
-
+        res.status(200).json({ success: true, total: reports.length, data: reports });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -151,52 +120,73 @@ export const getReports = async (req, res) => {
 // ✅ Get Single Report by ID
 export const getReportById = async (req, res) => {
     try {
-        const report = await Report.findOne({
-            _id: req.params.id,
-            user: req.user._id,
-        });
-
+        const report = await Report.findOne({ _id: req.params.id, user: req.user._id });
         if (!report) return res.status(404).json({ success: false, message: "Report not found" });
-
         res.status(200).json({ success: true, data: report });
-
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 };
 
-// ✅ Delete Single Report by ID
-export const deleteReport = async (req, res) => {
+// ✅ Update Report
+export const updateReport = async (req, res) => {
     try {
-        const report = await Report.findOne({
-            _id: req.params.id,
-            user: req.user._id,
-        });
-
+        const report = await Report.findOne({ _id: req.params.id, user: req.user._id });
         if (!report) return res.status(404).json({ success: false, message: "Report not found" });
 
-        // ✅ Cloudinary se image bhi delete karo agar ho
+        const {
+            hospital, dr, date, price, note,
+            systolic, diastolic, temp, sugar, height, weight
+        } = req.body;
+
+        // ✅ Nai image aayi toh purani delete karo aur nai upload karo
+        let imageUrl = report.imageUrl;
+        if (req.file) {
+            // purani image cloudinary se delete karo
+            if (report.imageUrl) {
+                try {
+                    const urlParts = report.imageUrl.split("/");
+                    const fileName = urlParts[urlParts.length - 1].split(".")[0];
+                    await cloudinary.uploader.destroy(`reports/${fileName}`);
+                } catch (e) {
+                    console.log("⚠️ Old image delete error:", e.message);
+                }
+            }
+            const result = await uploadToCloudinary(req.file.buffer);
+            imageUrl = result.secure_url;
+        }
+
+        const updated = await Report.findByIdAndUpdate(
+            req.params.id,
+            { hospital, dr, date, price, note, systolic, diastolic, temp, sugar, height, weight, imageUrl },
+            { new: true }
+        );
+
+        res.status(200).json({ success: true, message: "Report updated successfully", data: updated });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// ✅ Delete Report
+export const deleteReport = async (req, res) => {
+    try {
+        const report = await Report.findOne({ _id: req.params.id, user: req.user._id });
+        if (!report) return res.status(404).json({ success: false, message: "Report not found" });
+
         if (report.imageUrl) {
             try {
-                // public_id nikalo URL se — format: "reports/filename"
                 const urlParts = report.imageUrl.split("/");
                 const fileName = urlParts[urlParts.length - 1].split(".")[0];
-                const publicId = `reports/${fileName}`;
-                await cloudinary.uploader.destroy(publicId);
-                console.log("✅ Cloudinary image deleted:", publicId);
+                await cloudinary.uploader.destroy(`reports/${fileName}`);
+                console.log("✅ Cloudinary image deleted");
             } catch (cloudErr) {
                 console.log("⚠️ Cloudinary delete error:", cloudErr.message);
-                // image delete fail ho toh bhi report delete karo
             }
         }
 
         await Report.findByIdAndDelete(req.params.id);
-
-        res.status(200).json({
-            success: true,
-            message: "Report deleted successfully",
-        });
-
+        res.status(200).json({ success: true, message: "Report deleted successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
