@@ -37,6 +37,14 @@ const uploadToCloudinary = (fileBuffer) => {
     });
 };
 
+
+
+
+
+
+
+
+
 // ✅ Create Report
 export const createReport = async (req, res) => {
     try {
@@ -103,6 +111,11 @@ Include findings from both the image and the vitals above. Keep it simple and cl
     }
 };
 
+
+
+
+
+
 // ✅ Get All Reports
 export const getReports = async (req, res) => {
     try {
@@ -117,6 +130,12 @@ export const getReports = async (req, res) => {
     }
 };
 
+
+
+
+
+
+
 // ✅ Get Single Report by ID
 export const getReportById = async (req, res) => {
     try {
@@ -127,6 +146,14 @@ export const getReportById = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+
+
+
+
+
+
 
 // ✅ Update Report
 export const updateReport = async (req, res) => {
@@ -141,8 +168,10 @@ export const updateReport = async (req, res) => {
 
         // ✅ Nai image aayi toh purani delete karo aur nai upload karo
         let imageUrl = report.imageUrl;
+        let imageBuffer = null;
+        let imageMimeType = null;
+
         if (req.file) {
-            // purani image cloudinary se delete karo
             if (report.imageUrl) {
                 try {
                     const urlParts = report.imageUrl.split("/");
@@ -152,13 +181,57 @@ export const updateReport = async (req, res) => {
                     console.log("⚠️ Old image delete error:", e.message);
                 }
             }
-            const result = await uploadToCloudinary(req.file.buffer);
+            imageBuffer = req.file.buffer;
+            imageMimeType = req.file.mimetype;
+            const result = await uploadToCloudinary(imageBuffer);
             imageUrl = result.secure_url;
+        }
+
+        // ✅ Nai Gemini analysis generate karo
+        let analysis = report.analysis; // purani analysis default
+        try {
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+            const textPart = {
+                text: `
+You are a medical assistant. Carefully analyze the patient vitals and medical report image if available.
+Then give a clear health summary in 4-5 lines in simple English.
+
+Patient: ${report.name} (${report.relation || "Self"})
+Hospital: ${hospital || "N/A"}
+Doctor: ${dr || "N/A"}
+Notes: ${note || "N/A"}
+${systolic ? `Blood Pressure: ${systolic}/${diastolic} mmHg` : ""}
+${temp ? `Temperature: ${temp}°F` : ""}
+${sugar ? `Blood Sugar: ${sugar} mg/dL` : ""}
+${height ? `Height: ${height} cm` : ""}
+${weight ? `Weight: ${weight} kg` : ""}
+
+Include findings from both the image and the vitals above. Keep it simple and clear.
+                `.trim()
+            };
+
+            let result;
+            if (imageBuffer) {
+                // ✅ Nai image aayi — image + text dono bhejo
+                const imagePart = { inlineData: { mimeType: imageMimeType, data: imageBuffer.toString("base64") } };
+                result = await model.generateContent({ contents: [{ role: "user", parts: [imagePart, textPart] }] });
+            } else {
+                // ✅ Sirf text — purani image ya koi image nahi
+                result = await model.generateContent({ contents: [{ role: "user", parts: [textPart] }] });
+            }
+
+            analysis = result.response.text();
+            console.log("✅ Gemini re-analysis done:", analysis.slice(0, 100));
+
+        } catch (geminiError) {
+            console.log("❌ Gemini error:", geminiError.message);
+            // fail ho toh purani analysis rehti hai
         }
 
         const updated = await Report.findByIdAndUpdate(
             req.params.id,
-            { hospital, dr, date, price, note, systolic, diastolic, temp, sugar, height, weight, imageUrl },
+            { hospital, dr, date, price, note, systolic, diastolic, temp, sugar, height, weight, imageUrl, analysis },
             { new: true }
         );
 
@@ -167,6 +240,15 @@ export const updateReport = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+
+
+
+
+
+
+
 
 // ✅ Delete Report
 export const deleteReport = async (req, res) => {
@@ -191,3 +273,10 @@ export const deleteReport = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+
+
+
+
+
+
