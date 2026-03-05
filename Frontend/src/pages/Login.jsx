@@ -23,9 +23,10 @@ const Login = () => {
     if (!formData.email || !formData.password) return toast.error("All fields are required");
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:8000/user/login", formData);
+      const res = await axios.post("https://ib-healthmate.vercel.app/user/login", formData);
       if (res.data.success) {
         localStorage.setItem("accessToken", res.data.accessToken);
+        
         setUser(res.data.user);
         toast.success("Login Successful 🎉");
         navigate("/home");

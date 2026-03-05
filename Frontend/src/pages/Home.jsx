@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiEdit, FiTrash2, FiPlus, FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Home = () => {
     const fetchReports = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await axios.get("http://localhost:8000/data/getReports", {
+        const res = await axios.get("https://ib-healthmate.vercel.app/data/getReports", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -46,11 +47,13 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50 p-8">
 
+      <Navbar />
+
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mt-5  mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">HealthMate</h1>
-          <p className="text-sm text-violet-400 font-medium">Sehat ka Smart Dost</p>
+          {/* <h1 className="text-2xl font-bold text-slate-800">HealthMate</h1>
+          <p className="text-sm text-violet-400 font-medium">Sehat ka Smart Dost</p> */}
         </div>
         <button
           className="flex items-center gap-2 bg-gradient-to-r from-violet-500 to-purple-500 text-white px-5 py-2 rounded-xl shadow hover:scale-105 transition"

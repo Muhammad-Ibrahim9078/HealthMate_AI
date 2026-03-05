@@ -1,10 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { HiOutlineSparkles } from "react-icons/hi";
 import { FaHeart, FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { FaUpload, FaFileMedical, FaHeartbeat, FaHistory, FaShareAlt, FaShieldAlt } from "react-icons/fa";
 
 const Landing = () => {
+
+    const accessToken = localStorage.getItem("accessToken");
+
+
+    if (accessToken) {
+        return <Navigate to="/home" />;
+    }
+
     const navigate = useNavigate();
 
     return (

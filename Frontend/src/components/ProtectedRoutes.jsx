@@ -1,15 +1,13 @@
-import { Navigate } from 'react-router-dom'
-import { getData } from '../context/UserContext'
+import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({children}) => {
-    const {user} = getData()
-  return (
-    <div>
-      {
-        user ? children : <Navigate to={'/login'}/>
-      }
-    </div>
-  )
-}
+const ProtectedRoute = ({ children }) => {
+  const accessToken = localStorage.getItem("accessToken");
 
-export default ProtectedRoute
+  if (!accessToken) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+export default ProtectedRoute;

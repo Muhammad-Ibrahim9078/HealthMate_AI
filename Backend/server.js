@@ -13,10 +13,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 
-app.use(cors({
-    origin: "https://quiet-mousse-3c9243.netlify.app",
-    credentials: true
-}));
+app.use(cors());
 
 
 

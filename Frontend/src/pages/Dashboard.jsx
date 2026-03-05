@@ -32,14 +32,14 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const single = await axios.get(`http://localhost:8000/data/getReport/${id}`, {
+      const single = await axios.get(`https://ib-healthmate.vercel.app/data/getReport/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const currentReport = single.data.data;
       setReport(currentReport);
 
       const res = await axios.get(
-        `http://localhost:8000/data/getReports?name=${currentReport.name}`,
+        `https://ib-healthmate.vercel.app/data/getReports?name=${currentReport.name}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = res.data.data;
@@ -92,7 +92,7 @@ const Dashboard = () => {
       if (editImageFile) payload.append("image", editImageFile.file);
 
       const res = await axios.put(
-        `http://localhost:8000/data/updateReport/${editData._id}`,
+        `https://ib-healthmate.vercel.app/data/updateReport/${editData._id}`,
         payload,
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
       );
@@ -143,7 +143,7 @@ const Dashboard = () => {
 
     try {
       const token = localStorage.getItem("accessToken");
-      await axios.delete(`http://localhost:8000/data/deleteReport/${reportId}`, {
+      await axios.delete(`https://ib-healthmate.vercel.app/data/deleteReport/${reportId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllReports((prev) => prev.filter((r) => r._id !== reportId));
