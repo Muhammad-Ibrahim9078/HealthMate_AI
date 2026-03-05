@@ -11,7 +11,7 @@ const Verify = () => {
     const verifyEmail = async () => {
       try {
         const res = await axios.post(
-          "https://sage-speculoos-e806f3.netlify.app/user/verify",{},
+          "http://localhost:8000/user/verify",{},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ const Verify = () => {
   }, [token, navigate]);
 
   return (
-    <div className="relative w-full h-[760px] bg-green-100 overflow-hidden">
+    <div className="relative w-full h-190 bg-green-100 overflow-hidden">
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white p-6 rounded-xl shadow-md text-center w-[90%] max-w-md">
           <h2 className="text-xl font-semibold text-gray-800">{status}</h2>

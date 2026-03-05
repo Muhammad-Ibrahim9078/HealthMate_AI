@@ -25,7 +25,7 @@ const VerifyOtp = () => {
     try {
       // API call to verify OTP
       const response = await axios.post(
-        `https://sage-speculoos-e806f3.netlify.app/user/verify-otp/${email}`,
+        `http://localhost:8000/user/verify-otp/${email}`,
         { otp, email } // Sending OTP in request body
       );
 
@@ -64,7 +64,7 @@ const VerifyOtp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 to-purple-600 px-4">
       <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
         
         {/* Heading */}

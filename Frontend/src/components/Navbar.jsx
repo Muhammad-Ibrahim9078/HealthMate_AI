@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.post(
-        "https://sage-speculoos-e806f3.netlify.app/user/logout",
+        "http://localhost:8000/user/logout",
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
@@ -67,7 +67,7 @@ const Navbar = () => {
         {/* Logo */}
         <div onClick={() => navigate("/home")}
           className="flex items-center gap-2 cursor-pointer">
-          <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-2 rounded-full text-white">
+          <div className="bg-linear-to-r from-violet-500 to-purple-500 p-2 rounded-full text-white">
             <FaHeart size={14} />
           </div>
           <div>
@@ -85,7 +85,7 @@ const Navbar = () => {
               <img src={savedUser.profilePic} alt="user"
                 className="w-8 h-8 rounded-full object-cover border-2 border-violet-200" />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-8 h-8 rounded-full bg-linear-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
                 {savedUser?.username?.charAt(0)?.toUpperCase() || savedUser?.fullName?.charAt(0)?.toUpperCase() || "U"}
               </div>
             )}
@@ -101,9 +101,9 @@ const Navbar = () => {
           {open && (
             <div className="absolute right-0 mt-2 w-60 bg-white rounded-2xl shadow-xl border border-violet-100 z-50 overflow-hidden">
 
-              <div className="px-4 py-4 bg-gradient-to-r from-violet-50 to-purple-50 border-b border-violet-100">
+              <div className="px-4 py-4 bg-linear-to-r from-violet-50 to-purple-50 border-b border-violet-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-linear-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold">
                     {savedUser?.username?.charAt(0)?.toUpperCase() || "U"}
                   </div>
                   <div>

@@ -12,7 +12,7 @@ const Home = () => {
     const fetchReports = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await axios.get("https://sage-speculoos-e806f3.netlify.app/data/getReports", {
+        const res = await axios.get("http://localhost:8000/data/getReports", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

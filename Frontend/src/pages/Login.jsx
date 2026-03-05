@@ -23,7 +23,7 @@ const Login = () => {
     if (!formData.email || !formData.password) return toast.error("All fields are required");
     try {
       setLoading(true);
-      const res = await axios.post("https://sage-speculoos-e806f3.netlify.app/user/login", formData);
+      const res = await axios.post("http://localhost:8000/user/login", formData);
       if (res.data.success) {
         localStorage.setItem("accessToken", res.data.accessToken);
         
@@ -41,7 +41,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-violet-50 via-white to-purple-50">
+    <div className="min-h-screen flex bg-linear-to-br from-violet-50 via-white to-purple-50">
 
       {/* Left Info Section */}
       <div className="hidden lg:flex flex-col justify-center px-16 w-1/2">
@@ -96,7 +96,7 @@ const Login = () => {
 
           {/* Button */}
           <button type="submit" disabled={loading}
-            className="w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-500 hover:opacity-90 transition">
+            className="w-full py-3 rounded-xl text-white font-semibold bg-linear-to-r from-violet-500 to-purple-500 hover:opacity-90 transition">
             {loading ? "Logging in..." : "Login"}
           </button>
 

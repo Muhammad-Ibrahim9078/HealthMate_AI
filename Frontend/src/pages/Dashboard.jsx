@@ -32,14 +32,14 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const single = await axios.get(`https://sage-speculoos-e806f3.netlify.app/data/getReport/${id}`, {
+      const single = await axios.get(`http://localhost:8000/data/getReport/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const currentReport = single.data.data;
       setReport(currentReport);
 
       const res = await axios.get(
-        `https://sage-speculoos-e806f3.netlify.app/data/getReports?name=${currentReport.name}`,
+        `http://localhost:8000/data/getReports?name=${currentReport.name}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = res.data.data;
@@ -92,7 +92,7 @@ const Dashboard = () => {
       if (editImageFile) payload.append("image", editImageFile.file);
 
       const res = await axios.put(
-        `https://sage-speculoos-e806f3.netlify.app/data/updateReport/${editData._id}`,
+        `http://localhost:8000/data/updateReport/${editData._id}`,
         payload,
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
       );
@@ -143,7 +143,7 @@ const Dashboard = () => {
 
     try {
       const token = localStorage.getItem("accessToken");
-      await axios.delete(`https://sage-speculoos-e806f3.netlify.app/data/deleteReport/${reportId}`, {
+      await axios.delete(`http://localhost:8000/data/deleteReport/${reportId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllReports((prev) => prev.filter((r) => r._id !== reportId));
@@ -154,13 +154,13 @@ const Dashboard = () => {
   };
 
   if (!report) return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50 flex items-center justify-center">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-violet-50 flex items-center justify-center">
       <div className="text-violet-400 font-medium">Loading...</div>
     </div>
   );
 
   return (
-    <div className="p-8 space-y-8 bg-gradient-to-br from-slate-50 to-violet-50 min-h-screen">
+    <div className="p-8 space-y-8 bg-linear-to-brrom-slate-50 to-violet-50 min-h-screen">
 
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -169,7 +169,7 @@ const Dashboard = () => {
           <p className="text-violet-400 font-medium">{report.relation}</p>
         </div>
         <button onClick={() => navigate("/home")}
-          className="bg-gradient-to-r from-violet-500 to-purple-500 text-white px-5 py-2 rounded-xl shadow hover:scale-105 transition">
+          className="bg-linear-to-r from-violet-500 to-purple-500 text-white px-5 py-2 rounded-xl shadow hover:scale-105 transition">
           ← Back
         </button>
       </div>
@@ -372,7 +372,7 @@ const Dashboard = () => {
                   Cancel
                 </button>
                 <button onClick={handleEditSubmit} disabled={editLoading}
-                  className="bg-gradient-to-r from-violet-500 to-purple-500 text-white px-7 py-2.5 rounded-xl shadow hover:scale-105 transition disabled:opacity-50 text-sm font-medium">
+                  className="bg-linear-to-r from-violet-500 to-purple-500 text-white px-7 py-2.5 rounded-xl shadow hover:scale-105 transition disabled:opacity-50 text-sm font-medium">
                   {editLoading ? "Saving..." : "Save Changes"}
                 </button>
               </div>
@@ -398,7 +398,7 @@ const Dashboard = () => {
             </div>
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-3 bg-violet-50 rounded-2xl p-4">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-11 h-11 rounded-xl bg-linear-to-r from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
                   {selectedReport.name?.charAt(0)}
                 </div>
                 <div>
@@ -443,7 +443,7 @@ const Dashboard = () => {
           <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl relative">
             <div className="flex justify-between items-center p-6 border-b border-violet-50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-r from-violet-500 to-purple-500 flex items-center justify-center">
                   <FaRobot size={18} className="text-white" />
                 </div>
                 <div>
@@ -454,7 +454,7 @@ const Dashboard = () => {
               <button onClick={() => setAiModal(null)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-violet-50 transition"><FiX size={18} /></button>
             </div>
             <div className="p-6">
-              <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-5 border border-violet-100">
+              <div className="bg-linear-to-br from-violet-50 to-purple-50 rounded-2xl p-5 border border-violet-100">
                 <p className="text-sm text-slate-700 leading-relaxed">{aiModal.analysis || "No analysis available."}</p>
               </div>
               <p className="text-xs text-gray-400 mt-3 text-center">⚠️ AI response is for reference only. Consult your doctor.</p>
@@ -469,7 +469,7 @@ const Dashboard = () => {
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl relative">
             <div className="flex justify-between items-center p-6 border-b border-violet-50">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-r from-purple-500 to-violet-500 flex items-center justify-center">
                   <FiZap size={18} className="text-white" />
                 </div>
                 <div>
@@ -480,7 +480,7 @@ const Dashboard = () => {
               <button onClick={() => setAnalysisModal(null)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-violet-50 transition"><FiX size={18} /></button>
             </div>
             <div className="p-6">
-              <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-5 border border-violet-100">
+              <div className="bg-linear-to-br from-violet-50 to-purple-50 rounded-2xl p-5 border border-violet-100">
                 <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{analysisModal.analysis}</p>
               </div>
               <p className="text-xs text-gray-400 mt-3 text-center">⚠️ AI analysis is for reference only. Consult your doctor.</p>
@@ -491,7 +491,7 @@ const Dashboard = () => {
 
       {/* Lightbox */}
       {lightboxImg && (
-        <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-[60] p-4" onClick={() => setLightboxImg(null)}>
+        <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-60 p-4" onClick={() => setLightboxImg(null)}>
           <img src={lightboxImg} alt="" className="max-w-full max-h-full rounded-2xl shadow-2xl object-contain" />
           <button onClick={() => setLightboxImg(null)} className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition">
             <FiX size={20} />

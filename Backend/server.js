@@ -1,50 +1,29 @@
-// import multer from "multer";
-// import fs from "fs";
-// import path, { join } from "path";
-// import express from "express";
-// import 'dotenv/config'
-// import connectDB from "./database/db.js";
-// import userRoute from "./routes/userRoute.js"
-// import cors from "cors"
-// import reportRoute from "./routes/reportRoute.js";
-
-// const app = express();
-// const PORT = process.env.PORT || 8000;
-
-// app.use(express.json());
-
-// app.use(cors());
-
-
-
-// app.use('/user', userRoute);
-
-// app.use('/data', reportRoute)
-
-
-
-// app.listen(PORT, () =>{
-//     connectDB();
-//     console.log(`Server is Listening at port ${PORT}`);
-// });
-
-
+import multer from "multer";
+import fs from "fs";
+import path, { join } from "path";
 import express from "express";
-import "dotenv/config";
+import 'dotenv/config'
 import connectDB from "./database/db.js";
-import userRoute from "./routes/userRoute.js";
-import cors from "cors";
+import userRoute from "./routes/userRoute.js"
+import cors from "cors"
 import reportRoute from "./routes/reportRoute.js";
 
 const app = express();
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
+
 app.use(cors());
 
-connectDB();
-
-app.use("/user", userRoute);
-app.use("/data", reportRoute);
 
 
-export default app;
+app.use('/user', userRoute);
+
+app.use('/data', reportRoute)
+
+
+
+app.listen(PORT, () =>{
+    connectDB();
+    console.log(`Server is Listening at port ${PORT}`);
+});

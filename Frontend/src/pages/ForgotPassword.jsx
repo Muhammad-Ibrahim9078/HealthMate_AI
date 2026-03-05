@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     e.preventDefault()
     try {
       setIsLoading(true)
-      const res = await axios.post('https://sage-speculoos-e806f3.netlify.app/user/forget-password', { email })
+      const res = await axios.post('http://localhost:8000/user/forget-password', { email })
 
       if(res.data){
         toast.success(res.data.message)
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className='relative w-full h-[760px] bg-green-100 overflow-hidden'>
+    <div className='relative w-full h-190 bg-green-100 overflow-hidden'>
       <div className='min-h-screen flex flex-col'>
         {/* Center content */}
         <div className='flex-1 flex items-center justify-center p-4'>

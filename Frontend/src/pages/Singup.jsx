@@ -27,7 +27,7 @@ const Signup = () => {
       return toast.error("Passwords do not match");
     try {
       setLoading(true);
-      const res = await axios.post("https://sage-speculoos-e806f3.netlify.app/user/register", {
+      const res = await axios.post("http://localhost:8000/user/register", {
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -46,7 +46,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-violet-50 via-white to-purple-50">
+    <div className="min-h-screen flex bg-linear-to-br from-violet-50 via-white to-purple-50">
 
       {/* Left Section */}
       <div className="hidden lg:flex flex-col justify-center px-16 w-1/2">
@@ -122,7 +122,7 @@ const Signup = () => {
 
           {/* Button */}
           <button type="submit" disabled={loading}
-            className="w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-violet-500 to-purple-500 hover:opacity-90 transition">
+            className="w-full py-3 rounded-xl text-white font-semibold bg-linear-to-r from-violet-500 to-purple-500 hover:opacity-90 transition">
             {loading ? "Creating account..." : "Create account"}
           </button>
 
