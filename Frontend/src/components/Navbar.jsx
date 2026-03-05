@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/user/logout",
+        "https://ib-healthmate.vercel.app/user/logout",
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );

@@ -12,7 +12,7 @@ const Home = () => {
     const fetchReports = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await axios.get("http://localhost:8000/data/getReports", {
+        const res = await axios.get("https://ib-healthmate.vercel.app/data/getReports", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

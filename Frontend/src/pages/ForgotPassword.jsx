@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     e.preventDefault()
     try {
       setIsLoading(true)
-      const res = await axios.post('http://localhost:8000/user/forget-password', { email })
+      const res = await axios.post('https://ib-healthmate.vercel.app/user/forget-password', { email })
 
       if(res.data){
         toast.success(res.data.message)
