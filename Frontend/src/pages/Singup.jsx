@@ -27,7 +27,7 @@ const Signup = () => {
       return toast.error("Passwords do not match");
     try {
       setLoading(true);
-      const res = await axios.post("https://ib-healthmate.vercel.app/user/register", {
+      const res = await axios.post("https://sage-speculoos-e806f3.netlify.app/user/register", {
         username: formData.username,
         email: formData.email,
         password: formData.password,

@@ -11,7 +11,7 @@ const Verify = () => {
     const verifyEmail = async () => {
       try {
         const res = await axios.post(
-          "https://ib-healthmate.vercel.app/user/verify",{},
+          "https://sage-speculoos-e806f3.netlify.app/user/verify",{},
           {
             headers: {
               Authorization: `Bearer ${token}`,

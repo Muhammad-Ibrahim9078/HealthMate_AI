@@ -21,7 +21,7 @@ const AddReport = () => {
     const fetchExisting = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await axios.get("https://ib-healthmate.vercel.app/data/getReports", {
+        const res = await axios.get("https://sage-speculoos-e806f3.netlify.app/data/getReports", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const seen = new Set();
@@ -71,7 +71,7 @@ const AddReport = () => {
       const payload = new FormData();
       Object.keys(formData).forEach((key) => payload.append(key, formData[key]));
       if (imageFile) payload.append("image", imageFile.file);
-      await axios.post("https://ib-healthmate.vercel.app/data/createReport", payload, {
+      await axios.post("https://sage-speculoos-e806f3.netlify.app/data/createReport", payload, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
       navigate("/home");

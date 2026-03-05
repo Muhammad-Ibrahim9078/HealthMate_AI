@@ -35,7 +35,7 @@ const ChangePassword = () => {
 
         try {
             setIsLoading(true)
-            const res = await axios.post(`https://ib-healthmate.vercel.app/user/change-password/${email}`, {
+            const res = await axios.post(`https://sage-speculoos-e806f3.netlify.app/user/change-password/${email}`, {
                 newPassword: newPassword,
                 confimPassword: confirmPassword  // Note: backend mein spelling "confimPassword" hai
             })

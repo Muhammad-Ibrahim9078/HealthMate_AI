@@ -23,7 +23,7 @@ const Login = () => {
     if (!formData.email || !formData.password) return toast.error("All fields are required");
     try {
       setLoading(true);
-      const res = await axios.post("https://ib-healthmate.vercel.app/user/login", formData);
+      const res = await axios.post("https://sage-speculoos-e806f3.netlify.app/user/login", formData);
       if (res.data.success) {
         localStorage.setItem("accessToken", res.data.accessToken);
         

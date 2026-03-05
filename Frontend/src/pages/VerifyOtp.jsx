@@ -25,7 +25,7 @@ const VerifyOtp = () => {
     try {
       // API call to verify OTP
       const response = await axios.post(
-        `https://ib-healthmate.vercel.app/user/verify-otp/${email}`,
+        `https://sage-speculoos-e806f3.netlify.app/user/verify-otp/${email}`,
         { otp, email } // Sending OTP in request body
       );
 

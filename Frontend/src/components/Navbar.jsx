@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.post(
-        "https://ib-healthmate.vercel.app/user/logout",
+        "https://sage-speculoos-e806f3.netlify.app/user/logout",
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
