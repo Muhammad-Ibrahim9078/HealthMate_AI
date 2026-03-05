@@ -136,7 +136,7 @@ export const loginUser = async (req, res) => {
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).send({
-                success: flase,
+                success: false,
                 message: "All Fields Are Required"
             })
         }
@@ -250,7 +250,7 @@ export const forgotPassword = async (req, res) => {
         await sendOtpMail(email, otp)
 
         return res.status(200).send({
-            sucess: true,
+            success: true,
             message: "OTP Send Successfully"
         })
 
@@ -390,7 +390,7 @@ export const changePassword = async (req, res) =>{
         
     } catch (error) {
 
-         return res.status(505).send({
+         return res.status(500).send({
                 success: false,
                 message: "Internal Server Error"
             })
