@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://ib-email-auth-system.netlify.app"],
+    origin: "https://quiet-mousse-3c9243.netlify.app",
     credentials: true
 }));
 

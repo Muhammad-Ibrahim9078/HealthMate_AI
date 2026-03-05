@@ -4,13 +4,16 @@ import multer from "multer";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config";
 
+
 cloudinary.config({
     cloud_name: "df92wfbox",
     api_key: "586129174562144",
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 
 export const upload = multer({
     storage: multer.memoryStorage(),
@@ -23,6 +26,8 @@ export const upload = multer({
         }
     },
 });
+
+
 
 const uploadToCloudinary = (fileBuffer) => {
     return new Promise((resolve, reject) => {
@@ -152,9 +157,6 @@ export const getReportById = async (req, res) => {
 
 
 
-
-
-
 // ✅ Update Report
 export const updateReport = async (req, res) => {
     try {
@@ -273,10 +275,5 @@ export const deleteReport = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
-
-
-
-
 
 
